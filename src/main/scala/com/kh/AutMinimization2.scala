@@ -21,7 +21,7 @@ object AutMinimization2 {
     if(message.contains("stop")) {
       val nodeClass = ":".r.split(vertexData)(2)
       println(s"my ID = ${vertexId} I received stop : ${nodeClass}")
-      return "stop"
+      return nodeClass
     }
 
     if(vertexId == -1) {
@@ -49,9 +49,7 @@ object AutMinimization2 {
   def sendMsg(triplet: EdgeTriplet[String, String]): Iterator[(VertexId, String)] = {
 
     if(triplet.dstAttr.length == 1) return Iterator((triplet.srcId, triplet.attr + "-" + triplet.dstAttr))
-    if(triplet.dstAttr.equals("stop")) return Iterator()
-    val vertexDatas = ":".r.split(triplet.dstAttr)
-    val message = triplet.attr + "-" + vertexDatas.last
+    //    if(triplet.dstAttr.equals("stop")) return Iterator()
 
     if(triplet.dstId == -1) { // Du Superviseur (noeud special) vers les autres noeuds
 
@@ -60,6 +58,9 @@ object AutMinimization2 {
       return Iterator()
 
     }
+    val vertexDatas = ":".r.split(triplet.dstAttr)
+    if(vertexDatas.length == 1) return Iterator()
+    val message = triplet.attr + "-" + vertexDatas.last
     if(triplet.srcId == -1){ // Des autres noeud vers le Superviseur ( noeud special )
       val status = vertexDatas(1)
       println(s"in sendMsg ==> status : ${status}")
