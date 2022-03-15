@@ -18,14 +18,19 @@ object AutMinimization2 {
 
   def vprog(vertexId: VertexId, vertexData: String, message: String): String = {
 
-    if(message.isEmpty) return vertexData
-
-    if(message.contains("stop")) return "stop"
+    if(message.contains("stop")) {
+      val nodeClass = ":".r.split(vertexData)(2)
+      println(s"my ID = ${vertexId} I received stop : ${nodeClass}")
+      return "stop"
+    }
 
     if(vertexId == -1) {
-      return message
+
+      if(!message.isEmpty && !message.contains("1") && !vertexData.equals("alt")) return "alt"
+      return ""
     }
     else {
+      if(message.isEmpty) return vertexData
       val arrayMessages = "_".r.split(message).sortWith(_.compareTo(_) < 0)
         .map(msg=> "-".r.split(msg).last)
       val currentSize: Int = arrayMessages.toSet.size
@@ -50,8 +55,8 @@ object AutMinimization2 {
 
     if(triplet.dstId == -1) { // Du Superviseur (noeud special) vers les autres noeuds
 
-      if(!triplet.dstAttr.contains("1")) return Iterator((triplet.srcId, "stop"))
-      println("Before")
+      if(triplet.dstAttr.equals("alt")) return Iterator((triplet.srcId, "stop"))
+
       return Iterator()
 
     }
