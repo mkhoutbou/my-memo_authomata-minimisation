@@ -11,47 +11,48 @@
     def main(args: Array[String]): Unit = {
 
       Logger.getLogger("org").setLevel((Level.ERROR))
-      val sc = new SparkContext("local[*]", "PlusCourtChemin_with_pregel")
+      val sc = new SparkContext("spark://spark:7077", "PlusCourtChemin")
 
       val alt = sc.longAccumulator("Alt")
 
       var graphe: RDD[(Int, (ListBuffer[(Int, Double)], Double))] = null
 
       graphe = sc.parallelize(Seq(
-        (1, (ListBuffer((2, 2.0), (3, 4.0)), 0.0)),
-        (2, (ListBuffer((3, 1.0), (5, 7.0)), Double.PositiveInfinity)),
-        (3, (ListBuffer((4, 3.0), (5, 1.0)), Double.PositiveInfinity)),
-        (4, (ListBuffer((6, 1.0)), Double.PositiveInfinity)),
-        (5, (ListBuffer((4, 2.0), (6, 5.0)), Double.PositiveInfinity)),
-        (6, (ListBuffer(), Double.PositiveInfinity))
+        (1, (  ListBuffer((2, 2.0), (3, 4.0)),   0.0                      )  ),
+        (2, (  ListBuffer((3, 1.0), (5, 7.0)),   Double.PositiveInfinity  )  ),
+        (3, (  ListBuffer((4, 3.0), (5, 1.0)),   Double.PositiveInfinity  )  ),
+        (4, (  ListBuffer((6, 1.0)),             Double.PositiveInfinity  )  ),
+        (5, (  ListBuffer((4, 2.0), (6, 5.0)),   Double.PositiveInfinity  )  ),
+        (6, (  ListBuffer(),                     Double.PositiveInfinity  )  )
       ))
+
       alt.add(1L)
+
       while (alt.value > 0) {
         alt.reset()
-        val result1 = graphe.flatMap(
-          value => {
-            value._2._1.map(x => (x._1, x._2 + (value._2)._2))
+        val result1 = graphe.flatMap {
+          case (srcId, (listDestIds, distFromOriginToSrc)) => {
+            listDestIds.map{case (distId, distFromSrcToDest) => (distId, distFromSrcToDest + distFromOriginToSrc)}
           }
-        ).reduceByKey((x, y) => math.min(x, y)).fullOuterJoin(graphe)
+        }.reduceByKey((x, y) => math.min(x, y)).fullOuterJoin(graphe)
 
-        result1.foreach {
-          case (id, (left, right)) => {
-            val previousValue = right.get._2
-            var value = 0.0
-            if (left.isEmpty) value = previousValue
-            else value = left.get
-            if (value < previousValue) alt.add(1L)
+        result1.foreach { case (id, (newDistFromOrigin, right)) => {
+            val previousDistFromOrigin = right.get._2
+            var _newDistFromOrigin = 0.0
+            if (newDistFromOrigin.isEmpty) _newDistFromOrigin = previousDistFromOrigin
+            else _newDistFromOrigin = newDistFromOrigin.get
+            if (_newDistFromOrigin < previousDistFromOrigin) alt.add(1L)
           }
         }
-        val result2 = result1.map { case (id, (left, right)) => {
-          val previousValue = right.get._2
-          var value = 0.0
-          if (left.isEmpty) value = previousValue
+        val result2 = result1.map { case (id, (newDistFromOrigin, right)) => {
+          val previousDistFromOrigin = right.get._2
+          var _newDistFromOrigin = 0.0
+          if (newDistFromOrigin.isEmpty) _newDistFromOrigin = previousDistFromOrigin
           else {
-            if (previousValue < left.get) value = previousValue
-            else value = left.get
+            if (previousDistFromOrigin < newDistFromOrigin.get) _newDistFromOrigin = previousDistFromOrigin
+            else _newDistFromOrigin = newDistFromOrigin.get
           }
-          (id, (right.get._1, value))
+          (id, (right.get._1, _newDistFromOrigin))
 
         }
         }

@@ -8,7 +8,7 @@ object AutomataMinimization {
   def main(args: Array[String]): Unit = {
 
     Logger.getLogger("org").setLevel((Level.ERROR))
-    val sc = new SparkContext("local[*]", "PlusCourtChemin_with_pregel")
+    val sc = new SparkContext("spark://spark:7077", "AutomataMinimization")
 
     val alt = sc.longAccumulator("Alt")
 
@@ -21,14 +21,14 @@ object AutomataMinimization {
       (1, "b", 2),
       (2, "a", 2),
       (2, "b", 3)
-    ))
+    )).cache()
 
     var vertexClass = sc.parallelize(Seq(
       (0, "1:0"),
       (1, "1:0"),
       (2, "1:0"),
       (3, "1:1")
-    ))
+    )).cache()
 
     alt.add(1L)
     while (alt.value > 0) {
@@ -39,18 +39,11 @@ object AutomataMinimization {
         case ( (alpha1, class1), (alpha2, class2) ) => {
           val value1 = if (alpha1.isEmpty) class1 else alpha1 +"-"+ class1
           val value2 = if (alpha2.isEmpty) class2 else alpha2 +"-"+ class2
-          println(s"==============> ${value1 +"_"+ value2}")
           ("", value1 +"_"+ value2)
         }
-      }.map{case (vertexId, (_, classes)) => (vertexId, classes)}.join(vertexClass)
+      }.map{case (vertexId, (_, classes)) => (vertexId, classes)}.join(vertexClass).cache()
       result3.foreach{
         case (id, (newClass,previousClass)) => {
-          println(
-            s"""--------------------------------------------
-               |VertexId : $id
-               |New Class : $newClass
-               |previous Class : $previousClass
-               |""".stripMargin)
           val newClassSize = "_".r.split(newClass).map(x => "-".r.split(x)(1)).toSet.size
           if(previousClass.length == 1) {
             if(newClassSize != 1) alt.add(1L)

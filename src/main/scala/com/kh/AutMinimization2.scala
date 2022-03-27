@@ -79,7 +79,7 @@ object AutMinimization2 {
 
     Logger.getLogger("org").setLevel(Level.ERROR)
 
-    val sc = new SparkContext("local[*]", "FriendByAge")
+    val sc = new SparkContext("spark://spark:7077", "AutMinimization2")
 
     val edgeLines = sc.textFile("edges.txt")
     val vertices = (sc.textFile("vertices.txt")

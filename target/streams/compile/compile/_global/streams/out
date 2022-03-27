@@ -1,2 +1,8 @@
 [debug] Acquiring lock on file D:\Entretainments\Spark\project\target\.sbt-compilation-infos\root-compile\.sbt-idea-lock ...
+[error] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:20:30: type mismatch;
+[error]  found   : Seq[(Int, (scala.collection.mutable.ListBuffer[_ <: (Int, Double)], Double))]
+[error]  required: Seq[(Int, (scala.collection.mutable.ListBuffer[(Int, Double)], Double))]
+[error]       graphe = sc.makeRDD(Seq(
+[error]                              ^
+[error] one error found
 [debug] Releasing lock on file D:\Entretainments\Spark\project\target\.sbt-compilation-infos\root-compile\.sbt-idea-lock.
