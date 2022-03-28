@@ -5,22 +5,34 @@ import org.apache.spark.SparkContext
 object MeanWordLength {
 
   def main(args: Array[String]) {
+"""----------------------------------------------------------------------------------------------------------------"""
+    """ La Partie Configuration """
     val fileName = "./words_test.txt" // nom du fichier
-    val sc = new SparkContext("local[*]","WordCount")
-    val text = sc.textFile(fileName)
-    val words = text.flatMap(line => " ".r.split(line))
-    val word_key_value = words.map(word => (word.length, 1))
-    val word_counts = word_key_value.reduceByKey((x,y) => x + y)
-    val numerator_denominator = word_counts.reduce((first, second) => {
+    val sc = new SparkContext("local[*]","MeanWordLength")
 
-      val numerateur1 = if(first._1 > 0) first._1 * first._2 else -1 * first._1
-      val numerateur2 = if(second._1 > 0) second._1 * second._2 else -1 * second._1
-      val numerator = -1 * (numerateur1 + numerateur2 )
-      val denominator = first._2 + second._2
-      (numerator, denominator)
+"""----------------------------------------------------------------------------------------------------------------"""
+    """ Le Programme """
 
-    })
+    val (numerator, denominator ) = sc.textFile(fileName)
+      .flatMap(line => line.split(" "))
+      .map(word => (word.length, 1))
+      .reduceByKey((x,y) => x + y)
+      .reduce{ case ((nume1, denomi1), (nume2, denomi2)) => {
+
+        val numerator1 = if(nume1 > 0) nume1 * denomi1 else -1 * nume1
+        val numerator2 = if(nume2 > 0) nume2 * denomi2 else -1 * nume2
+        val numerator = -1 * (numerator1 + numerator2 )
+        val denominator = denomi1 + denomi2
+        (numerator, denominator)
+      }}
+
+
+"""----------------------------------------------------------------------------------------------------------------"""
+    """ L'Affichage """
     println(s"**************************** ============== *****************************")
-    println(s"Numerateur : ${numerator_denominator._1} ------------ Denominateur :${numerator_denominator._2}")
+    println(s"Numerateur : ${-1*numerator} ------------ Denominateur :${denominator}")
+
+"""----------------------------------------------------------------------------------------------------------------"""
+
   }
 }

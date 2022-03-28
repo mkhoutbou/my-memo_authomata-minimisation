@@ -1,72 +1,92 @@
   package com.kh.nographx
 
   import org.apache.log4j.{Level, Logger}
-  import org.apache.spark.SparkContext
-  import org.apache.spark.rdd.RDD
+        import org.apache.spark.SparkContext
+        import org.apache.spark.rdd.RDD
 
-  import scala.collection.mutable.ListBuffer
+        import scala.collection.mutable.ListBuffer
 
   object PlusCourtChemin {
 
-    def main(args: Array[String]): Unit = {
+          def main(args: Array[String]): Unit = {
 
-      Logger.getLogger("org").setLevel((Level.ERROR))
-      val sc = new SparkContext("spark://spark:7077", "PlusCourtChemin")
+"""----------------------------------------------------------------------------------------------------------------"""
+            """ La Partie Configuration """
+            Logger.getLogger("org").setLevel((Level.ERROR))
+            val sc = new SparkContext("spark://spark:7077", "PlusCourtChemin")
 
-      val alt = sc.longAccumulator("Alt")
+"""----------------------------------------------------------------------------------------------------------------"""
+            """ Le Programme """
 
-      var graphe: RDD[(Int, (ListBuffer[(Int, Double)], Double))] = null
+            // C'est une variable partagee qui permet au master si il doit sortir de la boucle while ou pas
+            val voteAlt = sc.longAccumulator("Alt")
 
-      graphe = sc.parallelize(Seq(
-        (1, (  ListBuffer((2, 2.0), (3, 4.0)),   0.0                      )  ),
-        (2, (  ListBuffer((3, 1.0), (5, 7.0)),   Double.PositiveInfinity  )  ),
-        (3, (  ListBuffer((4, 3.0), (5, 1.0)),   Double.PositiveInfinity  )  ),
-        (4, (  ListBuffer((6, 1.0)),             Double.PositiveInfinity  )  ),
-        (5, (  ListBuffer((4, 2.0), (6, 5.0)),   Double.PositiveInfinity  )  ),
-        (6, (  ListBuffer(),                     Double.PositiveInfinity  )  )
-      ))
+            val graphRDD = sc.parallelize(Seq(
+              (1, 2.0, 2),
+              (1, 4.0, 3),
+              (2, 1.0, 3),
+              (2, 7.0, 5),
+              (3, 3.0, 4),
+              (3, 1.0, 5),
+              (4, 1.0, 6),
+              (5, 2.0, 4),
+              (5, 5.0, 6)
+            ))
+            var distFromOriginToVerticesRDD = sc.parallelize(Seq(
+              (1, Double.PositiveInfinity),
+              (2, Double.PositiveInfinity),
+              (3, 0.0),
+              (4, Double.PositiveInfinity),
+              (5, Double.PositiveInfinity),
+              (6, Double.PositiveInfinity),
+            ))
 
-      alt.add(1L)
+            val result1 = graphRDD.map{
+              case (srcId, distFromSrcToDest, destId) => {
+                (srcId, (destId, distFromSrcToDest))
+              }
+            }
+            voteAlt.add(1L)
 
-      while (alt.value > 0) {
-        alt.reset()
-        val result1 = graphe.flatMap {
-          case (srcId, (listDestIds, distFromOriginToSrc)) => {
-            listDestIds.map{case (distId, distFromSrcToDest) => (distId, distFromSrcToDest + distFromOriginToSrc)}
+            while(voteAlt.value > 0){
+
+              voteAlt.reset()
+
+              // calul de nouvel distance
+              val result2 = result1
+                .join(distFromOriginToVerticesRDD)
+                .map{
+                  case (srcId, ((destId, distFromSrcToDest), distFromOriginToSrc)) =>
+                    (destId, distFromSrcToDest + distFromOriginToSrc)
+
+                }
+                .reduceByKey((x, y) => math.min(x, y))
+                .fullOuterJoin(distFromOriginToVerticesRDD)
+
+              // mis a jour des distances
+              distFromOriginToVerticesRDD = result2.map { case (id, (newlyCalculatedDistFromOrigin, previousDistFromOrigin)) =>
+                var newDistFromOrigin = 0.0
+                if (newlyCalculatedDistFromOrigin.isEmpty) newDistFromOrigin = previousDistFromOrigin.get
+                else {
+                  if (previousDistFromOrigin.get < newlyCalculatedDistFromOrigin.get) newDistFromOrigin = previousDistFromOrigin.get
+                  else newDistFromOrigin = newlyCalculatedDistFromOrigin.get
+                }
+                (id, newDistFromOrigin)
+              }
+
+              // verification de l'arret de la boucle
+              result2.foreach { case (id, (newlyCalculatedDistFromOrigin, previousDistFromOrigin)) =>
+                var newDistFromOrigin = 0.0
+                if (newlyCalculatedDistFromOrigin.isEmpty) newDistFromOrigin = previousDistFromOrigin.get
+                else newDistFromOrigin = newlyCalculatedDistFromOrigin.get
+                if(newDistFromOrigin < previousDistFromOrigin.get) voteAlt.add(1L) // alors on continue
+              }
+
+            }
+"""----------------------------------------------------------------------------------------------------------------"""
+            """ L'Affichage """
+            distFromOriginToVerticesRDD.collect.foreach(println)
           }
-        }.reduceByKey((x, y) => math.min(x, y)).fullOuterJoin(graphe)
-
-        result1.foreach { case (id, (newDistFromOrigin, right)) => {
-            val previousDistFromOrigin = right.get._2
-            var _newDistFromOrigin = 0.0
-            if (newDistFromOrigin.isEmpty) _newDistFromOrigin = previousDistFromOrigin
-            else _newDistFromOrigin = newDistFromOrigin.get
-            if (_newDistFromOrigin < previousDistFromOrigin) alt.add(1L)
-          }
-        }
-        val result2 = result1.map { case (id, (newDistFromOrigin, right)) => {
-          val previousDistFromOrigin = right.get._2
-          var _newDistFromOrigin = 0.0
-          if (newDistFromOrigin.isEmpty) _newDistFromOrigin = previousDistFromOrigin
-          else {
-            if (previousDistFromOrigin < newDistFromOrigin.get) _newDistFromOrigin = previousDistFromOrigin
-            else _newDistFromOrigin = newDistFromOrigin.get
-          }
-          (id, (right.get._1, _newDistFromOrigin))
-
-        }
-        }
-        graphe = result2
-      }
-
-      val shortestPaths = graphe.map {
-        case (id, (_, value)) => (id, value)
-      }
-
-      shortestPaths.foreach(println)
-
-
-    }
-
+"""----------------------------------------------------------------------------------------------------------------"""
 
   }
