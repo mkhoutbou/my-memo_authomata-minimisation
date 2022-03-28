@@ -1,24 +1,2 @@
 [debug] Acquiring lock on file D:\Entretainments\Spark\project\target\.sbt-compilation-infos\root-compile\.sbt-idea-lock ...
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:90:1: a pure expression does nothing in statement position; multiline expressions may require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:13:1: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:14:13: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn]             """ La Partie Configuration """
-[warn]             ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:18:1: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:19:13: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn]             """ Le Programme """
-[warn]             ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:86:1: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala:87:13: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn]             """ L'Affichage """
-[warn]             ^
-[warn] 7 warnings found
 [debug] Releasing lock on file D:\Entretainments\Spark\project\target\.sbt-compilation-infos\root-compile\.sbt-idea-lock.
