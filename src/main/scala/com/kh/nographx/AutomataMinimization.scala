@@ -10,7 +10,7 @@
 """----------------------------------------------------------------------------------------------------------------"""
       """ La Partie Configuration """
       Logger.getLogger("org").setLevel((Level.ERROR))
-      val sc = new SparkContext("spark://spark:7077", "AutomataMinimization")
+      val sc = new SparkContext("spark://spark:7077", "AutomataMinimizationPregel")
 
 """----------------------------------------------------------------------------------------------------------------"""
       """ Le Programme """

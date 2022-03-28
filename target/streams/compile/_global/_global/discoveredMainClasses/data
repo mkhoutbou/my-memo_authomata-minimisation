@@ -1,1 +1,1 @@
-["com.kh.functions.Anagramme","com.kh.functions.Filter","com.kh.functions.MeanWordLength","com.kh.functions.WordCount","com.kh.nographx.AutomataMinimization","com.kh.nographx.PlusCourtChemin","com.kh.withgraphx.AutomataMinimization","com.kh.withgraphx.PlusCourtChemin"]
+["com.kh.functions.Anagramme","com.kh.functions.Filter","com.kh.functions.MeanWordLength","com.kh.functions.WordCount","com.kh.nographx.AutomataMinimization","com.kh.nographx.PlusCourtChemin","com.kh.withgraphx.AutomataMinimizationPregel","com.kh.withgraphx.PlusCourtChemin"]
