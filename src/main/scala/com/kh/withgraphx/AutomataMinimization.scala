@@ -5,6 +5,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.graphx._
 
 object AutomataMinimization {
+  val alphabetSize:Int = 2
   def parseEdgeLine(line: String) = {
 
     val fields: Array[String] = line.split(",")
@@ -19,8 +20,10 @@ object AutomataMinimization {
   def vprog(vertexId: VertexId, vertexData: String, message: String): String = {
 
     if (message.contains("stop")) {
-      val nodeClass = ":".r.split(vertexData)(2)
-      println(s"my ID = ${vertexId} I received stop : ${nodeClass}")
+      var nodeClass = vertexData.split(":")(2)
+      var classLength = nodeClass.length
+      classLength = classLength/(alphabetSize + 1)
+      nodeClass = nodeClass.substring(0, classLength)
       return nodeClass
     }
 
@@ -34,9 +37,9 @@ object AutomataMinimization {
       val arrayMessages = message.split("_").sortWith(_.compareTo(_) < 0)
         .map(msg => msg.split("-").last)
       val currentSize: Int = arrayMessages.toSet.size
-      val previousDatas = vertexData.split(":")
-      val previousSize: Int = previousDatas.head.toInt
-      val previousClass: String = previousDatas.last
+      val previousData = vertexData.split(":")
+      val previousSize: Int = previousData.head.toInt
+      val previousClass: String = previousData.last
       var status = ""
       if (currentSize == previousSize) status = "0"
       else status = "1"
