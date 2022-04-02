@@ -20,12 +20,17 @@ def parseEdgeLine(line: String) = {
 def vProg(vertexId: VertexId, vertexData: String, message: String): String = {
 
 
-  if (vertexId == -1) {
+  if (vertexId == -1) { // si c'est le noeud special
 
     if (!message.isEmpty && !message.contains("1") && !vertexData.equals("alt")) return "alt"
     return ""
   }
-  else {
+  else { // si c'est un autre noeud ( autre que le noeud especial )
+
+    // si le message c'est le message d'initialisation
+    if (message.isEmpty) return vertexData
+
+    // s'il recoit un signal d'arret du noeud especial
     if (message.contains("stop")) {
       var nodeClass = vertexData.split(":")(2)
       var classLength = nodeClass.length
@@ -33,7 +38,8 @@ def vProg(vertexId: VertexId, vertexData: String, message: String): String = {
       nodeClass = nodeClass.substring(0, classLength)
       return nodeClass
     }
-    if (message.isEmpty) return vertexData
+
+    // calcul de la nouvelle classe
     val arrayMessages = message.split("_").sortWith(_.compareTo(_) < 0)
       .map(msg => msg.split("-").last)
     val currentSize: Int = arrayMessages.toSet.size
@@ -84,18 +90,26 @@ def reduceMsg(message1: String, message2: String): String = {
 
 def main(args: Array[String]): Unit = {
 
+"""----------------------------------------------------------------------------------------------------------------"""
+            """ La Partie Configuration """
   Logger.getLogger("org").setLevel(Level.ERROR)
-
   val sc = new SparkContext("local[*]", "AutomataMinimizationPregel")
 
-  val edgeLines = sc.textFile("edges.txt")
+"""----------------------------------------------------------------------------------------------------------------"""
+            """ Le Programme """
+
   val vertices = sc.textFile("vertices.txt")
     .map(line => line.split(","))
     .map(part => (part(0).toLong, part(1)))
-  val edges = edgeLines.map(parseEdgeLine)
+
+  val edges = sc.textFile("edges.txt")
+    .map(parseEdgeLine)
 
   val graph = Graph(vertices, edges)
   val gra2: Graph[String, String] = graph.pregel[String]("", 100, EdgeDirection.In)(vProg, sendMsg, reduceMsg)
+
+"""----------------------------------------------------------------------------------------------------------------"""
+              """ L'Affichage """
   gra2.vertices.collect.foreach(println)
 
 }
