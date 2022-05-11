@@ -12,27 +12,28 @@ object PlusCourtChemin {
     Logger.getLogger("org").setLevel((Level.ERROR))
     val sc = new SparkContext("local[*]","PlusCourtChemin_with_pregel")
     // A graph with edge attributes containing distances
-    val graph: Graph[Long, Double] =
+    val graphRDD: Graph[Long, Double] =
       GraphGenerators.logNormalGraph(sc, numVertices = 5).mapEdges(e => e.attr.toDouble)
-    val sourceId: VertexId = 2 // The ultimate source
-    // Initialize the graph such that all vertices except the root have distance infinity.
-    val initialGraph = graph.mapVertices((id, _) =>
-      if (id == sourceId) 0.0 else Double.PositiveInfinity)
-    val sssp = initialGraph.pregel(Double.PositiveInfinity)(
-      (id, dist, newDist) => math.min(dist, newDist), // Vertex Program
-      triplet => {  // Send Message
+    val sourceId: VertexId = 2 //sommet source
+    // initialiser les sommets, excepte le sommet source, a l'infini.
+    val resultGraphRDD: Graph[Double, Double] = graphRDD.mapVertices(
+      (id, _) => if (id == sourceId) 0.0 else Double.PositiveInfinity
+    )
+    .pregel(Double.PositiveInfinity)( // message initial
+      (id, dist, newDist) => math.min(dist, newDist), // Programme de sommet (Vprog)
+      triplet => {  // Programme d'envoie message (sendMsg)
         if (triplet.srcAttr + triplet.attr < triplet.dstAttr) {
           Iterator((triplet.dstId, triplet.srcAttr + triplet.attr))
         } else {
           Iterator.empty
         }
       },
-      (a, b) => math.min(a, b) // Merge Message
+      (a, b) => math.min(a, b) // programme de merge (mergeMsg)
     )
 
-    println(sssp.vertices.collect.mkString("\n"))
+//    println(sssp.vertices.collect.mkString("\n"))
     println("=========================================*******************************====================")
-    println(graph.edges.collect.mkString("\n"))
+    println(graphRDD.edges.collect.mkString("\n"))
   }
 
 }

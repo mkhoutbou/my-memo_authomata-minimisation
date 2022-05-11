@@ -2,9 +2,6 @@
 
   import org.apache.log4j.{Level, Logger}
         import org.apache.spark.SparkContext
-        import org.apache.spark.rdd.RDD
-
-        import scala.collection.mutable.ListBuffer
 
   object PlusCourtChemin {
 
@@ -16,10 +13,10 @@
             val sc = new SparkContext("spark://spark:7077", "PlusCourtChemin")
 
 """----------------------------------------------------------------------------------------------------------------"""
-            """ Le Programme """
+                        """ Le Programme """
 
-            // C'est une variable partagee qui permet au master si il doit sortir de la boucle while ou pas
-            val voteAlt = sc.longAccumulator("Alt")
+            // C'est une variable partagee qui permet au master de savoir s'il doit sortir de la boucle while ou pas
+            val voteNewLoop = sc.longAccumulator("Alt")
 
             val graphRDD = sc.parallelize(Seq(
               (1, 2.0, 2),
@@ -46,11 +43,12 @@
                 (srcId, (destId, distFromSrcToDest))
               }
             }
-            voteAlt.add(1L)
+            // incrementer la variable de voteAlt de 1
+            voteNewLoop.add(1L)
 
-            while(voteAlt.value > 0){
+            while(voteNewLoop.value > 0){
 
-              voteAlt.reset()
+              voteNewLoop.reset() // remetre voteAlt a 0
 
               // calul de nouvel distance
               val result2 = result1
@@ -79,7 +77,8 @@
                 var newDistFromOrigin = 0.0
                 if (newlyCalculatedDistFromOrigin.isEmpty) newDistFromOrigin = previousDistFromOrigin.get
                 else newDistFromOrigin = newlyCalculatedDistFromOrigin.get
-                if(newDistFromOrigin < previousDistFromOrigin.get) voteAlt.add(1L) // alors on continue
+                // sinon on vote "continuer"
+                if(newDistFromOrigin < previousDistFromOrigin.get) voteNewLoop.add(1L)
               }
 
             }

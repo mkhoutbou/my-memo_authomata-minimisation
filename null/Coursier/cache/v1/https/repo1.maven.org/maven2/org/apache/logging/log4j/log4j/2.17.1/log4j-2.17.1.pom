@@ -1777,7 +1777,7 @@
          "ignoreMissingAnnotations": false
        },
        "reportUsesFor": [
-          "java.missing.newClass",
+          "java.missing.destBlockIdsCollection",
           "java.class.nonPublicPartOfAPI"
        ],
        "filter": {
