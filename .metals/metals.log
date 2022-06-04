@@ -255,3 +255,7 @@ Caused by: java.nio.file.FileSystemNotFoundException: Provider "gitlens" not ins
 	at scala.meta.internal.metals.MetalsLanguageServer.didFocus(MetalsLanguageServer.scala:1125)
 	... 16 more
 
+2022.05.11 17:17:28 WARN  no build target for: D:\Entretainments\Spark\src\main\scala\com\kh\nographx\PlusCourtChemin.scala
+2022.05.11 17:17:51 WARN  no build target for: D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala
+2022.05.11 17:19:46 INFO  time: code lens generation in 1.86s
+2022.05.11 17:47:29 INFO  time: code lens generation in 2.01s

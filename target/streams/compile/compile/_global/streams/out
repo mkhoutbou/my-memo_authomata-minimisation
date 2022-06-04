@@ -1,24 +1,21 @@
 [debug] Acquiring lock on file D:\Entretainments\Spark\project\target\.sbt-compilation-infos\root-compile\.sbt-idea-lock ...
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:90:1: a pure expression does nothing in statement position; multiline expressions may require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:11:1: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:12:7: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn]       """ La Partie Configuration """
-[warn]       ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:16:1: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:17:7: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn]       """ Le Programme """
-[warn]       ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:86:1: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn] """----------------------------------------------------------------------------------------------------------------"""
-[warn] ^
-[warn] D:\Entretainments\Spark\src\main\scala\com\kh\nographx\AutomataMinimization.scala:87:7: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
-[warn]       """ L'Affichage """
-[warn]       ^
-[warn] 7 warnings found
+[warn] D:\Entretainments\Spark\src\main\scala\com\kh\withgraphx\AutomataMinimizationPregel.scala:105:3: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
+[warn]   """----------------------------------------------------------------------------------------------------------------"""
+[warn]   ^
+[warn] D:\Entretainments\Spark\src\main\scala\com\kh\withgraphx\AutomataMinimizationPregel.scala:106:15: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
+[warn]               """ La Partie Configuration """
+[warn]               ^
+[warn] D:\Entretainments\Spark\src\main\scala\com\kh\withgraphx\AutomataMinimizationPregel.scala:110:3: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
+[warn]   """----------------------------------------------------------------------------------------------------------------"""
+[warn]   ^
+[warn] D:\Entretainments\Spark\src\main\scala\com\kh\withgraphx\AutomataMinimizationPregel.scala:111:15: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
+[warn]               """ Le Programme """
+[warn]               ^
+[warn] D:\Entretainments\Spark\src\main\scala\com\kh\withgraphx\AutomataMinimizationPregel.scala:151:3: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
+[warn]   """----------------------------------------------------------------------------------------------------------------"""
+[warn]   ^
+[warn] D:\Entretainments\Spark\src\main\scala\com\kh\withgraphx\AutomataMinimizationPregel.scala:152:17: a pure expression does nothing in statement position; multiline expressions might require enclosing parentheses
+[warn]                 """ L'Affichage """
+[warn]                 ^
+[warn] 6 warnings found
 [debug] Releasing lock on file D:\Entretainments\Spark\project\target\.sbt-compilation-infos\root-compile\.sbt-idea-lock.

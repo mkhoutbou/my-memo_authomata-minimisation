@@ -1,28 +1,30 @@
 [debug] [zinc] IncrementalCompile -----------
 [debug] IncrementalCompile.incrementalCompile
-[debug] previous = Stamps for: 16 products, 8 sources, 5 libraries
+[debug] previous = Stamps for: 28 products, 8 sources, 5 libraries
 [debug] current source = Set(${BASE}/src/main/scala/com/kh/functions/Filter.scala, ${BASE}/src/main/scala/com/kh/functions/Anagramme.scala, ${BASE}/src/main/scala/com/kh/withgraphx/AutomataMinimizationPregel.scala, ${BASE}/src/main/scala/com/kh/nographx/AutomataMinimization.scala, ${BASE}/src/main/scala/com/kh/withgraphx/PlusCourtChemin.scala, ${BASE}/src/main/scala/com/kh/functions/MeanWordLength.scala, ${BASE}/src/main/scala/com/kh/functions/WordCount.scala, ${BASE}/src/main/scala/com/kh/nographx/PlusCourtChemin.scala)
-[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/com/kh/nographx/AutomataMinimization.scala), unmodified = ...),Set(),Set(),API Changes: Set())
+[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/com/kh/withgraphx/AutomataMinimizationPregel.scala), unmodified = ...),Set(),Set(),API Changes: Set())
 [debug] 
 [debug] Initial source changes:
 [debug] 	removed: Set()
 [debug] 	added: Set()
-[debug] 	modified: Set(${BASE}/src/main/scala/com/kh/nographx/AutomataMinimization.scala)
+[debug] 	modified: Set(${BASE}/src/main/scala/com/kh/withgraphx/AutomataMinimizationPregel.scala)
 [debug] Invalidated products: Set()
 [debug] External API changes: API Changes: Set()
 [debug] Modified binary dependencies: Set()
-[debug] Initial directly invalidated classes: Set(com.kh.nographx.AutomataMinimization)
+[debug] Initial directly invalidated classes: Set(com.kh.withgraphx.AutomataMinimizationPregel.Message, com.kh.withgraphx.AutomataMinimizationPregel._Null, com.kh.withgraphx.AutomataMinimizationPregel.CustomBoolean, com.kh.withgraphx.AutomataMinimizationPregel.StateData, com.kh.withgraphx.AutomataMinimizationPregel._True, com.kh.withgraphx.AutomataMinimizationPregel.BlockId, com.kh.withgraphx.AutomataMinimizationPregel, com.kh.withgraphx.AutomataMinimizationPregel._False)
 [debug] Sources indirectly invalidated by:
 [debug] 	product: Set()
 [debug] 	binary dep: Set()
 [debug] 	external source: Set()
-[debug] All initially invalidated classes: Set(com.kh.nographx.AutomataMinimization)
-[debug] All initially invalidated sources:Set(${BASE}/src/main/scala/com/kh/nographx/AutomataMinimization.scala)
-[debug] Initial set of included nodes: com.kh.nographx.AutomataMinimization
+[debug] All initially invalidated classes: Set(com.kh.withgraphx.AutomataMinimizationPregel.Message, com.kh.withgraphx.AutomataMinimizationPregel._Null, com.kh.withgraphx.AutomataMinimizationPregel.CustomBoolean, com.kh.withgraphx.AutomataMinimizationPregel.StateData, com.kh.withgraphx.AutomataMinimizationPregel._True, com.kh.withgraphx.AutomataMinimizationPregel.BlockId, com.kh.withgraphx.AutomataMinimizationPregel, com.kh.withgraphx.AutomataMinimizationPregel._False)
+[debug] All initially invalidated sources:Set(${BASE}/src/main/scala/com/kh/withgraphx/AutomataMinimizationPregel.scala)
+[debug] Initial set of included nodes: com.kh.withgraphx.AutomataMinimizationPregel.Message, com.kh.withgraphx.AutomataMinimizationPregel._Null, com.kh.withgraphx.AutomataMinimizationPregel.CustomBoolean, com.kh.withgraphx.AutomataMinimizationPregel.StateData, com.kh.withgraphx.AutomataMinimizationPregel._True, com.kh.withgraphx.AutomataMinimizationPregel.BlockId, com.kh.withgraphx.AutomataMinimizationPregel, com.kh.withgraphx.AutomataMinimizationPregel._False
+[debug] Including com.kh.withgraphx.AutomataMinimizationPregel._False by com.kh.withgraphx.AutomataMinimizationPregel.CustomBoolean
+[debug] Including com.kh.withgraphx.AutomataMinimizationPregel._True by com.kh.withgraphx.AutomataMinimizationPregel.CustomBoolean
 [debug] compilation cycle 1
 [info] compiling 1 Scala source to D:\Entretainments\Spark\target\scala-2.12\classes ...
 [debug] Getting org.scala-sbt:compiler-bridge_2.12:1.6.0:compile for Scala 2.12.15
-[debug] [zinc] Running cached compiler 309726a2 for Scala compiler version 2.12.15
+[debug] [zinc] Running cached compiler 37b0e4f3 for Scala compiler version 2.12.15
 [debug] [zinc] The Scala compiler is invoked with:
 [debug] 	-bootclasspath
 [debug] 	C:\Users\DELL\.sbt\boot\scala-2.12.15\lib\scala-library.jar
@@ -34,5 +36,5 @@
 [debug] Final step, transitive dependencies:
 [debug] 	Set()
 [debug] No classes were invalidated.
-[debug] Scala compilation took 2.1515668 s
+[debug] Scala compilation took 1.8850153 s
 [info] done compiling
